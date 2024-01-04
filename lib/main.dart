@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_room/core/app_routes.dart';
-import 'package:meeting_room/pages/home/home_page.dart';
-
 import 'pages/home/login_page.dart';
 import 'pages/meeting_list/meeting_page.dart';
 
