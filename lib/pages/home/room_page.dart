@@ -14,6 +14,7 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   final _roomController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,67 +29,75 @@ class _RoomPageState extends State<RoomPage> {
               fit: BoxFit.cover,
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                height: 100,
-              ),
-              Column(
-                children: [
-                  Image.asset(
-                    Images.logo,
-                    height: 180,
-                  ),
-                  SizedBox(
-                    width: 400,
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Otağın kodunu daxil edin!';
-                        }
-                        return null;
-                      },
-                      controller: _roomController,
-                      decoration: InputDecoration(
-                        hintText: 'Otağın kodunu daxil edin',
-                        enabledBorder: borderAll,
-                        focusedBorder: borderAll,
-                        errorBorder: errorBorder,
-                        focusedErrorBorder: errorBorder,
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  height: 100,
+                ),
+                Column(
+                  children: [
+                    Image.asset(
+                      Images.logo,
+                      height: 180,
+                    ),
+                    SizedBox(
+                      width: 400,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Otağın kodunu daxil edin!';
+                          }
+                          return null;
+                        },
+                        controller: _roomController,
+                        decoration: InputDecoration(
+                          hintText: 'Otağın kodunu daxil edin',
+                          enabledBorder: borderAll,
+                          focusedBorder: borderAll,
+                          errorBorder: errorBorder,
+                          focusedErrorBorder: errorBorder,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 35,
-                  ),
-                  SizedBox(
-                    width: 200,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF98BF34),
-                        side: const BorderSide(color: Colors.white, width: 5),
-                      ),
-                      child: const Text(
-                        'Daxil ol',
-                        style: TextStyle(color: Colors.white, fontSize: 17),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    SizedBox(
+                      width: 200,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomePage(),
+                                ),
+                              );
+                            });
+                          }
+                          ;
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF98BF34),
+                          side: const BorderSide(color: Colors.white, width: 5),
+                        ),
+                        child: const Text(
+                          'Daxil ol',
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const HomeFooter(),
-            ],
+                  ],
+                ),
+                const HomeFooter(),
+              ],
+            ),
           ),
         ],
       ),
