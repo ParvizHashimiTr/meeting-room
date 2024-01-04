@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meeting_room/core/app_routes.dart';
 import 'package:meeting_room/pages/home/home_page.dart';
 
+import 'pages/home/login_page.dart';
 import 'pages/meeting_list/meeting_page.dart';
 
 void main() {
@@ -14,12 +15,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Meeting Room',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const LoginPage(),
       routes: {
         AppRoutes.meetingRoom: (context) {
           return const MeetingPage();

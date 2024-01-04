@@ -19,11 +19,11 @@ class HomeFooter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '© 2023 Time Busness centre',
+            '© 2024 Time Business Centre',
             style: style,
           ),
           Text(
-            'Developed with by TimeSoft',
+            'Developed by TimeSoft',
             style: style,
           ),
         ],
