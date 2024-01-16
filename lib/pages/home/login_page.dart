@@ -1,11 +1,13 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/assets.dart';
 import 'room_page.dart';
 import 'widgets/border_widget.dart';
 import 'widgets/home_footer.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,10 +22,55 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _isPasswordVisiable = false;
 
+  void _login() async {
+    try {
+      final userName = _userNameController.text.trim();
+      final password = _passwordController.text.trim();
+      String bearerToken = 'QpwL5tke4Pnpja7X4';
+
+      // https://dev-api.oneof.az/v1/auth/login
+      /*
+    {
+      "username": "elshad123321",
+      "password": "123456789"
+    }
+    */
+      final uri = Uri.https('dev-api.oneof.az', '/v1/auth/login');
+      final response = await http.post(
+        uri,
+        body: {
+          'username': userName,
+          'password': password,
+        },
+        headers: {
+          'Authorization': 'Bearer $bearerToken',
+        },
+      );
+      if (!mounted) return;
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RoomPage(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+              content: Text('Login failed. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+      }
+    } catch (e) {
+      debugPrintThrottled(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       body: Stack(
         children: [
@@ -114,18 +161,21 @@ class _LoginPageState extends State<LoginPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              setState(
-                                () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const RoomPage(),
-                                    ),
-                                  );
-                                  _formKey.currentState!.reset();
-                                },
-                              );
+                              _login();
+
+                              // setState(
+                              //   () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) => const RoomPage(),
+                              //       ),
+                              //     );
+                              //     _formKey.currentState!.reset();
+                              //   },
+                              // );
                             }
+                            _formKey.currentState!.reset();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF98BF34),
